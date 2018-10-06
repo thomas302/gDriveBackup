@@ -1,5 +1,6 @@
-<?xml version="1.0" ?>
 <data>
-	<directories numberOfDirs="0">
+	<directories numberOfDirs="2">
+		<dir1 driveID="asdf">/home/joel/Programing/PythonProjects/gDriveBackup</dir1>
+		<dir2>/home/joel/Programing/PythonProjects/</dir2>
 	</directories>
 </data>

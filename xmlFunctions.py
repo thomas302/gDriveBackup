@@ -5,26 +5,30 @@ class readFromXML:
     def __init__(self):
         self.xmlTree = et.parse("dirList.xml")
         self.root = self.xmlTree.getroot()
-    def updateXML(self):
-        self.xmlTree = et.parse("dirList.xml")
-        self.root = self.xmlTree.getroot()
     def numberOfDirsInXML(self):
-        self.updateXML()
+        self.__init__()
         a = self.root.find("./directories")
         x = a.attrib["numberOfDirs"]
         return int(x) 
     def readDirectory(self, dirN):
+        self.__init__()
         dirToRead = self.root.find("./directories/dir"+str(dirN))
         return dirToRead.text
     def readDriveID(self, dirN):
+        self.__init__()
         dirToRead = self.root.find("./directories/dir"+str(dirN))
         return dirToRead.attrib["driveID"]
-
+    def hasFileId(self, dirN):
+        self.__init__()
+        dirToRead = self.root.find("./directories/dir"+str(dirN))
+        return str(dirToRead.get("driveID"))
+        
 class writeToXML:
     def __init__(self):
         self.xmlTree = et.parse("dirList.xml")
         self.root = self.xmlTree.getroot() 
     def writeDirectory(self, absDir, x):
+        self.__init__()
         x = x+1
         directories = self.root.find("./directories")
         directories.attrib["numberOfDirs"] = str(x)
@@ -33,10 +37,12 @@ class writeToXML:
         self.xmlTree.write("dirList.xml")
         self.makePretty()
     def writeDriveID(self, dirN, driveID):
+        self.__init__()
         dirToEdit = self.root.find("./directories/dir"+str(dirN))
         dirToEdit.attrib["driveID"] = driveID
         self.xmlTree.write("dirList.xml")
     def fileToString(self):
+        self.__init__()
         x = et.tostring(self.root)
         return x
     def makePretty(self):
@@ -54,8 +60,10 @@ if __name__ == '__main__':
     r = readFromXML()
     w = writeToXML()
     #t = xmlTests()
-#
-#    w.writeDirectory("absDir", r.numberOfDirsInXML())
-#    x = r.numberOfDirsInXML()
-#    for i in range(1,x+1):
-#        print(str(i)+"  "+r.readDirectory(i))
+
+    w.writeDirectory("absDir", r.numberOfDirsInXML())
+    x = r.numberOfDirsInXML()
+    w.writeDriveID("1", "asdf")
+    for i in range(1,x+1):
+        print(str(i)+"  "+r.readDirectory(i))
+        print(r.hasFileId(i))
